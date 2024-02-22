@@ -1,3 +1,5 @@
+#include "system.h"
+
 #include "sys.h"
 #include "delay.h"
 #include "usart.h"
@@ -43,10 +45,7 @@ void float_task(void *pvParameters);
 
 int main(void)
 {
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4); // 设置系统中断优先级分组4
-    delay_init(168);                                // 初始化延时函数
-    uart_init(115200);                              // 初始化串口
-    LED_Init();                                     // 初始化LED端口
+    initSystem();
 
     // 创建开始任务
     xTaskCreate((TaskFunction_t)start_task,          // 任务函数
