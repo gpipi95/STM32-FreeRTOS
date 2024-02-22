@@ -1,0 +1,7 @@
+{
+    "files.encoding": "gb2312",
+    "files.associations": {
+        "*.vue": "vue",
+        "task.h": "c"
+    }
+}
