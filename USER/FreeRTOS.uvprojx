@@ -403,6 +403,11 @@
               <FileType>8</FileType>
               <FilePath>.\system.cpp</FilePath>
             </File>
+            <File>
+              <FileName>PTask.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\PTask.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
