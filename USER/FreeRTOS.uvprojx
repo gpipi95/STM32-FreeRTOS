@@ -373,7 +373,7 @@
             <ScatterFile></ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc></Misc>
+            <Misc>--verbose --list err.txt</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -399,11 +399,6 @@
               <FilePath>.\system_stm32f4xx.c</FilePath>
             </File>
             <File>
-              <FileName>system.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\system.cpp</FilePath>
-            </File>
-            <File>
               <FileName>PTask.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\PTask.cpp</FilePath>
@@ -427,6 +422,11 @@
               <FileName>StartTask.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\StartTask.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>pSys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\pSys.c</FilePath>
             </File>
           </Files>
         </Group>

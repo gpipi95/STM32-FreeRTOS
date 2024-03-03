@@ -7,7 +7,7 @@ PTask::PTask(const string& name, const uint16_t stackSize, uint16_t priority)
     , _taskName(name)
     , _stackSize(stackSize)
     , _priority(priority)
-    , _delayPeriod(10)
+    , _delayPeriod(1)
     , _isOnce(false)
     , _autoDelete(true)
 {
@@ -16,7 +16,8 @@ PTask::PTask(const string& name, const uint16_t stackSize, uint16_t priority)
                                        _stackSize,
                                        (void*)this,
                                        (UBaseType_t)_priority,
-                                       _task);
+                                       &_task);
+
     if (xReturned != pdPASS) {
         /* The task was created. */
         _task = NULL;
@@ -39,11 +40,13 @@ PTask::~PTask()
  */
 bool PTask::Start()
 {
-    bool       ret   = true;
+    bool ret = true;
+
     eTaskState state = eTaskGetState(_task);
     if (eSuspended != state) {
         return false;
     }
+
     ret = init();
     if (_task) {
         vTaskResume(_task);

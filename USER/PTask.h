@@ -16,7 +16,7 @@ public:
 
 private:
     static void    _cyclicJob(PTask* task);
-    TaskHandle_t*  _task;
+    TaskHandle_t   _task;
     std::string    _taskName;
     const uint16_t _stackSize;
     uint16_t       _priority;

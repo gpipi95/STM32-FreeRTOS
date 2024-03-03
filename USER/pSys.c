@@ -1,11 +1,11 @@
-#include "system.h"
+#include "pSys.h"
 
 #include "delay.h"
-#include "usart.h"
-#include "sys.h"
 #include "led.h"
+#include "sys.h"
+#include "usart.h"
 
-bool initSystem()
+bool initSystem(void)
 {
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4); // 设置系统中断优先级分组4
     delay_init(168);                                // 初始化延时函数

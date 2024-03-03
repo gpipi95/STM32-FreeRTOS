@@ -3,6 +3,9 @@
     "files.associations": {
         "*.vue": "vue",
         "task.h": "c",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "system.h": "c",
+        "limits": "c",
+        "stm32f4xx.h": "c"
     }
 }

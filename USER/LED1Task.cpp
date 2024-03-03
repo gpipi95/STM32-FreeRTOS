@@ -5,6 +5,7 @@
 LED1Task::LED1Task()
     : PTask("LED1Task", 50, 3)
 {
+    _delayPeriod = 800;
 }
 
 LED1Task::~LED1Task()

@@ -20,14 +20,14 @@ bool StartTask::work()
 {
     taskENTER_CRITICAL();
     // 创建LED0任务
-    LED0Task led0Tsk;
-    led0Tsk.Start();
+    LED0Task* led0Tsk = new LED0Task();
+    led0Tsk->Start();
     // 创建LED1任务
-    LED1Task led1Tsk;
-    led1Tsk.Start();
+    LED1Task* led1Tsk = new LED1Task();
+    led1Tsk->Start();
     // 浮点测试任务
-    FloatTask floatTsk;
-    floatTsk.Start();
+    // FloatTask floatTsk;
+    // floatTsk.Start();
     taskEXIT_CRITICAL();
     return true;
 }
