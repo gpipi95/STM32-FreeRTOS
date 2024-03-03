@@ -408,6 +408,26 @@
               <FileType>8</FileType>
               <FilePath>.\PTask.cpp</FilePath>
             </File>
+            <File>
+              <FileName>FloatTask.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\FloatTask.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>LED0Task.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\LED0Task.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>LED1Task.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\LED1Task.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>StartTask.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\StartTask.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
