@@ -3,13 +3,12 @@
 #include <sys.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-    void delay_init(u8 SYSCLK);
-    void delay_us(u32 nus);
-    void delay_ms(u32 nms);
-    void delay_xms(u32 nms);
+void delay_init(void);
+void delay_us(u32 nus);
+void delay_ms(u32 nms);
+void delay_xms(u32 nms);
 #ifdef __cplusplus
 }
 #endif
