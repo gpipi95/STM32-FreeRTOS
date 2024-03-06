@@ -15,7 +15,7 @@ FloatTask::~FloatTask()
 bool FloatTask::work()
 {
     _data += 0.01f;
-    printf("data的值为: %.4f\r\n", _data);
+    printf("data鐨勫�间负: %.4f\r\n", _data);
     vTaskDelay(1000);
 
     return true;
