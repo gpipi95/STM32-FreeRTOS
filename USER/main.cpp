@@ -6,8 +6,6 @@
 #include "led.h"
 #include "sys.h"
 
-#include "Test/RngBufTest.h"
-
 #include <iostream>
 #include <stdio.h>
 
@@ -26,10 +24,6 @@ int main(void)
 
     ret = start->Start();
     printf("StartTask start: %d\r\n", ret);
-
-    RngBufTest test;
-
-    test.Test();
 
     cout << "this is a test string" << endl;
 

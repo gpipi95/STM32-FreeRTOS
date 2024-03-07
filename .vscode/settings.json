@@ -1,5 +1,5 @@
 {
-    "files.encoding": "gb2312",
+    "files.encoding": "utf8",
     "files.associations": {
         "*.vue": "vue",
         "task.h": "c",
@@ -8,6 +8,7 @@
         "limits": "c",
         "stm32f4xx.h": "c",
         "led.h": "c",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "utility": "cpp"
     }
 }
