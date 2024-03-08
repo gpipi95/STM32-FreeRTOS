@@ -1,19 +1,17 @@
 #include "usart.h"
+//#include "UARTBuffer.h"
 #include "sys.h"
 
-#if SYSTEM_SUPPORT_OS
 #include "FreeRTOS.h" //FreeRTOS使用
-#endif
 
+//static UARTBuffer* g_buffer = NULL;
 // 加入以下代码,支持printf函数,而不需要选择use MicroLIB
-
 #ifdef __CC_ARM
 #pragma import(__use_no_semihosting)
 // 标准库需要的支持函数
 struct __FILE {
     int handle;
 };
-
 #elif defined(__GNUC__) || defined(__clang__)
 __ASM(".global __use_no_semihosting\n\t");
 #endif
@@ -30,7 +28,6 @@ void _sys_exit(int x)
     x = x;
 }
 // 重定义fputc函数
-int $Super$$fputc(int ch, FILE* f);
 int $Sub$$fputc(int ch, FILE* f)
 {
     while ((USART1->SR & 0X40) == 0)
@@ -38,12 +35,10 @@ int $Sub$$fputc(int ch, FILE* f)
     USART1->DR = (u8)ch;
     return ch;
 }
-int $Super$$fgetc(FILE* f);
 int $Sub$$fgetc(FILE* f)
 {
     return 0;
 }
-int $Super$$ferror(FILE* f);
 int $Sub$$ferror(FILE* f)
 {
     return EOF;
@@ -57,7 +52,6 @@ void _ttywrch(int ch)
     ch = ch;
 }
 
-#if EN_USART1_RX // 如果使能了接收
 // 串口1中断服务程序
 // 注意,读取USARTx->SR能避免莫名其妙的错误
 u8 USART1_RX_BUF[USART_REC_LEN]; // 接收缓冲,最大USART_REC_LEN个字节.
@@ -104,7 +98,6 @@ void uart1_init(u32 bound)
 
                                                                                     // USART_ClearFlag(USART1, USART_FLAG_TC);
 
-#if EN_USART1_RX
     USART_ITConfig(USART1, USART_IT_RXNE, ENABLE); // 开启相关中断
 
     // Usart1 NVIC 配置
@@ -114,7 +107,7 @@ void uart1_init(u32 bound)
     NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;      // IRQ通道使能
     NVIC_Init(&NVIC_InitStructure);                                     // 根据指定的参数初始化VIC寄存器、
 
-#endif
+    // g_buffer = UARTBuffer::instance();
 }
 // 初始化IO 串口1
 // bound:波特率
@@ -197,28 +190,8 @@ void USART1_IRQHandler(void)                               // 串口1中断服�
     if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) // 接收中断(接收到的数据必须是0x0d 0x0a结尾)
     {
         Res = USART_ReceiveData(USART1);                   //(USART1->DR);	//读取接收到的数据
-
-        if ((USART1_RX_STA & 0x8000) == 0)                 // 接收未完成
-        {
-            if (USART1_RX_STA & 0x4000)                    // 接收到了0x0d
-            {
-                if (Res != 0x0a) {
-                    USART1_RX_STA = 0;                     // 接收错误,重新开始
-                } else {
-                    USART1_RX_STA |= 0x8000;               // 接收完成了
-                }
-            } else {                                       // 还没收到0X0D
-                if (Res == 0x0d) {
-                    USART1_RX_STA |= 0x4000;
-                } else {
-                    USART1_RX_BUF[USART1_RX_STA & 0X3FFF] = Res;
-                    USART1_RX_STA++;
-                    if (USART1_RX_STA > (USART_REC_LEN - 1)) {
-                        USART1_RX_STA = 0; // 接收数据错误,重新开始接收
-                    }
-                }
-            }
-        }
+        // if (!g_buffer->write(&Res, 1)) {
+        // buffer full?
+        // }
     }
 }
-#endif

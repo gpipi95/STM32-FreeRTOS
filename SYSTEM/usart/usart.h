@@ -4,16 +4,24 @@
 #include "stm32f4xx_conf.h"
 #include "sys.h"
 
-#define USART_REC_LEN 200 // ¶¨Òå×î´ó½ÓÊÕ×Ö½ÚÊı 200
-#define EN_USART1_RX 1    // Ê¹ÄÜ£¨1£©/½ûÖ¹£¨0£©´®¿Ú1½ÓÊÕ
+#define USART_REC_LEN 200 // å®šä¹‰æœ€å¤§æ¥æ”¶å­—èŠ‚æ•° 200
+#define EN_USART1_RX 1    // ä½¿èƒ½ï¼ˆ1ï¼‰/ç¦æ­¢ï¼ˆ0ï¼‰ä¸²å£1æ¥æ”¶
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// Èç¹ûÏë´®¿ÚÖĞ¶Ï½ÓÊÕ£¬Çë²»Òª×¢ÊÍÒÔÏÂºê¶¨Òå
+// å¦‚æœæƒ³ä¸²å£ä¸­æ–­æ¥æ”¶ï¼Œè¯·ä¸è¦æ³¨é‡Šä»¥ä¸‹å®å®šä¹‰
 void uart3_init(u32 bound);
 void uart1_init(u32 bound);
+void _sys_exit(int x);
+void _ttywrch(int ch);
+int  $Super$$fputc(int ch, FILE* f);
+int  $Sub$$fputc(int ch, FILE* f);
+int  $Super$$fgetc(FILE* f);
+int  $Sub$$fgetc(FILE* f);
+int  $Super$$ferror(FILE* f);
+int  $Sub$$ferror(FILE* f);
 
 #ifdef __cplusplus
 }

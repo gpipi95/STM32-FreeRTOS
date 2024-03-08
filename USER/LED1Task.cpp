@@ -1,11 +1,16 @@
 #include "LED1Task.h"
 
+#include "App.h"
 #include "led.h"
 
+#include <iostream>
+
 LED1Task::LED1Task()
-    : PTask("LED1Task", 50, 3)
+    : PTask(LED1_TASK_NAME, LED1_TASK_STK, LED1_TASK_PRI)
 {
     _delayPeriod = 800;
+
+    std::cout << "Create led1 task\r\n";
 }
 
 LED1Task::~LED1Task()

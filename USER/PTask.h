@@ -12,10 +12,11 @@ public:
     PTask(const std::string& name, uint16_t stackSize, uint16_t priority);
     virtual ~PTask();
 
-    bool Start();
+    bool        Start();
+    std::string Name() const;
 
 private:
-    static void    _cyclicJob(PTask* task);
+    static void    _cyclicJob(void* task);
     TaskHandle_t   _task;
     std::string    _taskName;
     const uint16_t _stackSize;

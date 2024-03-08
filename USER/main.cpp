@@ -1,4 +1,6 @@
 #include "FreeRTOS.h"
+#include "LED0Task.h"
+#include "LED1Task.h"
 #include "StartTask.h"
 #include "pSys.h"
 
@@ -7,25 +9,29 @@
 #include "sys.h"
 
 #include <iostream>
-#include <stdio.h>
 
 using namespace std;
 
 int main(void)
 {
     bool ret = initSystem();
-    printf("Init: %d\r\n", ret);
-    delay_ms(2000);
-    auto start = new StartTask();
+    delay_ms(100);
+    cout << "Init:" << ret << "\r\n";
+    delay_ms(200);
 
-    printf("Starting 1\r\n");
-
-    delay_ms(2000);
-
-    ret = start->Start();
-    printf("StartTask start: %d\r\n", ret);
-
-    cout << "this is a test string" << endl;
+    // StartTask* tsk = new StartTask();
+    // tsk->Name();
+    // tsk->Start();
+    LED0Task led0Tsk;
+    led0Tsk.Name();
+    led0Tsk.Start();
+    cout << "Start Led0 finished.\r\n";
+    // 创建LED1任务
+    // LED1Task led1Tsk;
+    // cout << "Starting Led1.\r\n";
+    // led1Tsk.Start();
+    // cout << "Start Led1 finished.\r\n";
 
     vTaskStartScheduler(); // 开启任务调度
+    cout << "Exit App.\r\n";
 }
