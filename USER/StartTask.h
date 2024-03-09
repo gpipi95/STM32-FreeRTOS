@@ -11,7 +11,10 @@ public:
     virtual ~StartTask();
 
 private:
-    virtual bool work();
+    bool init();
+    bool work();
+
+    TaskHandle_t _tasks[3];
 };
 
 #endif

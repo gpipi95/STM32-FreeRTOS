@@ -163,6 +163,8 @@ extern uint32_t SystemCoreClock;
 #define INCLUDE_eTaskGetState 1
 #define INCLUDE_xTimerPendFunctionCall 1
 
+#define INCLUDE_uxTaskGetStackHighWaterMark 1
+// #define INCLUDE_uxTaskGetStackHighWaterMark2 1
 /***************************************************************************************************************/
 /*                                FreeRTOS与中断有关的配置选项                                                  */
 /***************************************************************************************************************/

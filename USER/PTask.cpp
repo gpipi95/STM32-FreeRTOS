@@ -12,8 +12,8 @@ PTask::PTask(const string& name, const uint16_t stackSize, uint16_t priority)
     , _priority(priority)
     , _delayPeriod(1)
     , _isOnce(false)
+    , _enableDebug(false)
 {
-    cout << "Task1:" << Name() << hex << ":" << this << "\r\n";
 }
 
 PTask::~PTask()
@@ -31,11 +31,16 @@ PTask::~PTask()
 bool PTask::Start()
 {
     if (_task) {
+        if (_enableDebug) {
+            std::cout << "Task " << Name() << " already started.\r\n";
+        }
         return true;
     }
 
     if (init()) {
-        std::cout << "Create PTask1 " << Name() << "\r\n";
+        if (_enableDebug) {
+            std::cout << "Create PTask1 " << Name() << "\r\n";
+        }
         BaseType_t xReturned = xTaskCreate((TaskFunction_t)_cyclicJob,
                                            (const char*)_taskName.c_str(),
                                            _stackSize,
@@ -43,14 +48,20 @@ bool PTask::Start()
                                            (UBaseType_t)_priority,
                                            &_task);
 
-        std::cout << "Create PTask2 " << Name() << "\r\n";
+        if (_enableDebug) {
+            std::cout << "Create PTask2 " << Name() << "\r\n";
+        }
         if (xReturned != pdPASS) {
             /* The task was created. */
             _task = NULL;
-            std::cout << "Create PTask4 " << Name() << "\r\n";
+            if (_enableDebug) {
+                std::cout << "Create PTask4 " << Name() << "\r\n";
+            }
             return false;
         } else {
-            std::cout << "Create PTask3 " << Name() << "\r\n";
+            if (_enableDebug) {
+                std::cout << "Create PTask3 " << Name() << "\r\n";
+            }
             return true;
         }
     }
@@ -93,12 +104,16 @@ void PTask::_cyclicJob(void* pvParameters)
     }
 
     bool ret = true;
-    cout << "Task2:" << task->Name() << hex << task << "\r\n";
+    if (task->_enableDebug) {
+        cout << "Task2:" << task->Name() << hex << task << "\r\n";
+    }
     do {
         ret = task->work();
         vTaskDelay(task->_delayPeriod);
     } while ((!task->_isOnce) && ret);
 
-    cout << "Del task " << task->Name() << ".\r\n";
+    if (task->_enableDebug) {
+        cout << "Del task " << task->Name() << ".\r\n";
+    }
     delete task;
 }

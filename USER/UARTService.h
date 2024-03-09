@@ -15,6 +15,8 @@ private:
     UARTBuffer* _buffer;
     uint8_t*    _data;
 
+    const static int _buffer_size;
+
     bool work();
 };
 

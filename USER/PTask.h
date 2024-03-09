@@ -12,9 +12,11 @@ public:
     PTask(const std::string& name, uint16_t stackSize, uint16_t priority);
     virtual ~PTask();
 
-    bool        Start();
-    std::string Name() const;
-    void        Report() const;
+    bool         Start();
+    std::string  Name() const;
+    void         Report() const;
+    bool         IsDebugEabled() const { return _enableDebug; }
+    TaskHandle_t Handle() const { return _task; }
 
 private:
     static void    _cyclicJob(void* task);
@@ -26,6 +28,7 @@ private:
 protected:
     uint16_t _delayPeriod;
     bool     _isOnce;
+    bool     _enableDebug;
 
     virtual bool init();
     virtual bool work();

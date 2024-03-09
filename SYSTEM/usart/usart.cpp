@@ -6,7 +6,8 @@
 
 #include <iostream>
 
-static UARTBuffer* g_buffer = NULL;
+static UARTBuffer*             g_buffer       = NULL;
+static UARTBuffer::BufferType* g_inter_buffer = NULL;
 // 加入以下代码,支持printf函数,而不需要选择use MicroLIB
 #ifdef __CC_ARM
 #pragma import(__use_no_semihosting)
@@ -110,8 +111,14 @@ void uart1_init(u32 bound)
     NVIC_Init(&NVIC_InitStructure);                                     // 根据指定的参数初始化VIC寄存器、
 
     g_buffer = UARTBuffer::instance();
+    // 此处生成的buffer在后续任务中不为NULL!
+    g_inter_buffer = new UARTBuffer::BufferType();
+    if (g_inter_buffer && g_buffer) {
+        g_buffer->setBuffer(g_inter_buffer);
+    } else {
+        std::cout << "Buffer create error.\r\n";
+    }
 }
-// 初始化IO 串口1
 // bound:波特率
 void uart3_init(u32 bound)
 {
@@ -198,6 +205,5 @@ void USART1_IRQHandler(void)                               // 串口1中断服�
         } else {
             std::cout << std::hex << data;
         }
-        USART_ClearITPendingBit(USART1, USART_IT_RXNE);
     }
 }
