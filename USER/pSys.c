@@ -7,9 +7,9 @@
 
 bool initSystem(void)
 {
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4); // ÉèÖÃÏµÍ³ÖĞ¶ÏÓÅÏÈ¼¶·Ö×é4
-    delay_init();                                   // ³õÊ¼»¯ÑÓÊ±º¯Êı
-    uart1_init(115200);                             // ³õÊ¼»¯´®¿Ú
-    LED_Init();                                     // ³õÊ¼»¯LED¶Ë¿Ú
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4); // è®¾ç½®ç³»ç»Ÿä¸­æ–­ä¼˜å…ˆçº§åˆ†ç»„4
+    delay_init();                                   // åˆå§‹åŒ–å»¶æ—¶å‡½æ•°
+    uart1_init(115200);                             // åˆå§‹åŒ–ä¸²å£
+    LED_Init();                                     // åˆå§‹åŒ–LEDç«¯å£
     return true;
 }

@@ -17,9 +17,7 @@ public:
 
 private:
     UARTBuffer();
-    ~UARTBuffer();
-
-    BufferType* _buffer;
+    ~UARTBuffer() { }
 };
 
 #endif

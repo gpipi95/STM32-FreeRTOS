@@ -15,7 +15,6 @@ StartTask::StartTask()
 {
     _isOnce      = true;
     _delayPeriod = 1;
-    _autoDelete  = true;
 }
 
 StartTask::~StartTask()
@@ -31,12 +30,11 @@ bool StartTask::work()
     cout << "Start Led0 finished.\r\n";
     // 创建LED1任务
     LED1Task* led1Tsk = new LED1Task();
-    cout << "Starting Led1.\r\n";
     led1Tsk->Start();
     cout << "Start Led1 finished.\r\n";
-
-    // auto uartServ = new UARTService();
-    // uartServ->Start();
+    auto uartServ = new UARTService();
+    uartServ->Start();
+    cout << "Start uartserv finished.\r\n";
     // 浮点测试任务
     // FloatTask floatTsk;
     // floatTsk.Start();

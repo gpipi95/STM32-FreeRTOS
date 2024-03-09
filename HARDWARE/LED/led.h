@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-void LED_Init(void); // ³õÊ¼»¯
+void LED_Init(void); // åˆå§‹åŒ–
 
 #ifdef __cplusplus
 }

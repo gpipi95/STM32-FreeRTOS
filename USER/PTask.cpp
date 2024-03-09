@@ -12,10 +12,8 @@ PTask::PTask(const string& name, const uint16_t stackSize, uint16_t priority)
     , _priority(priority)
     , _delayPeriod(1)
     , _isOnce(false)
-    , _autoDelete(true)
 {
-    cout << "Task1:" << hex << this << "\r\n";
-    cout << "Start task 1" << Name() << ".\r\n";
+    cout << "Task1:" << Name() << hex << ":" << this << "\r\n";
 }
 
 PTask::~PTask()
@@ -37,7 +35,7 @@ bool PTask::Start()
     }
 
     if (init()) {
-        std::cout << "Create PTask1 " << _taskName.c_str() << "\r\n";
+        std::cout << "Create PTask1 " << Name() << "\r\n";
         BaseType_t xReturned = xTaskCreate((TaskFunction_t)_cyclicJob,
                                            (const char*)_taskName.c_str(),
                                            _stackSize,
@@ -45,28 +43,32 @@ bool PTask::Start()
                                            (UBaseType_t)_priority,
                                            &_task);
 
-        std::cout << "Create PTask2 " << _taskName.c_str() << "\r\n";
+        std::cout << "Create PTask2 " << Name() << "\r\n";
         if (xReturned != pdPASS) {
             /* The task was created. */
             _task = NULL;
-            std::cout << "Create PTask4 " << _taskName.c_str() << "\r\n";
+            std::cout << "Create PTask4 " << Name() << "\r\n";
             return false;
         } else {
-            std::cout << "Create PTask3 " << _taskName.c_str() << "\r\n";
+            std::cout << "Create PTask3 " << Name() << "\r\n";
             return true;
         }
     }
     return false;
 }
+
 string PTask::Name() const
 {
-    cout << "My name: " << _taskName.size()
+    return _taskName;
+}
+
+void PTask::Report() const
+{
+    cout << _taskName
          << ":" << _priority
          << ":" << _stackSize
-         << ":" << _autoDelete
          << ":" << _isOnce
          << "\r\n";
-    return _taskName;
 }
 /**
  * @brief Do work
@@ -91,16 +93,12 @@ void PTask::_cyclicJob(void* pvParameters)
     }
 
     bool ret = true;
-    cout << "Task2:" << hex << task << "\r\n";
-    cout << "Start task " << task->Name() << ".\r\n";
-    // do {
-    //     ret = task->work();
-    //     vTaskDelay(task->_delayPeriod);
-    // } while ((!task->_isOnce) && ret);
+    cout << "Task2:" << task->Name() << hex << task << "\r\n";
+    do {
+        ret = task->work();
+        vTaskDelay(task->_delayPeriod);
+    } while ((!task->_isOnce) && ret);
 
-    cout << "Exit task " << task->Name() << ".\r\n";
-    if (task->_autoDelete) {
-        cout << "Del task " << task->Name() << ".\r\n";
-        delete task;
-    }
+    cout << "Del task " << task->Name() << ".\r\n";
+    delete task;
 }

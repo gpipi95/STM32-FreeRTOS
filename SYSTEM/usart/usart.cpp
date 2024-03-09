@@ -1,10 +1,12 @@
 #include "usart.h"
-//#include "UARTBuffer.h"
+#include "UARTBuffer.h"
 #include "sys.h"
 
 #include "FreeRTOS.h" //FreeRTOS使用
 
-//static UARTBuffer* g_buffer = NULL;
+#include <iostream>
+
+static UARTBuffer* g_buffer = NULL;
 // 加入以下代码,支持printf函数,而不需要选择use MicroLIB
 #ifdef __CC_ARM
 #pragma import(__use_no_semihosting)
@@ -107,7 +109,7 @@ void uart1_init(u32 bound)
     NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;      // IRQ通道使能
     NVIC_Init(&NVIC_InitStructure);                                     // 根据指定的参数初始化VIC寄存器、
 
-    // g_buffer = UARTBuffer::instance();
+    g_buffer = UARTBuffer::instance();
 }
 // 初始化IO 串口1
 // bound:波特率
@@ -186,12 +188,16 @@ void USART3_IRQHandler(void)                                            // 串�
 
 void USART1_IRQHandler(void)                               // 串口1中断服务程序
 {
-    u8 Res;
-    if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) // 接收中断(接收到的数据必须是0x0d 0x0a结尾)
+    uint8_t data;
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) // 接收中断
     {
-        Res = USART_ReceiveData(USART1);                   //(USART1->DR);	//读取接收到的数据
-        // if (!g_buffer->write(&Res, 1)) {
-        // buffer full?
-        // }
+        data = USART_ReceiveData(USART1);                  //(USART1->DR);	//读取接收到的数据
+        if (!g_buffer->write(&data, 1)) {
+            // buffer full?
+            std::cout << "Buffer full?" << std::hex << g_buffer << "\r\n";
+        } else {
+            std::cout << std::hex << data;
+        }
+        USART_ClearITPendingBit(USART1, USART_IT_RXNE);
     }
 }

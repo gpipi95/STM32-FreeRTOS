@@ -9,8 +9,6 @@ LED1Task::LED1Task()
     : PTask(LED1_TASK_NAME, LED1_TASK_STK, LED1_TASK_PRI)
 {
     _delayPeriod = 800;
-
-    std::cout << "Create led1 task\r\n";
 }
 
 LED1Task::~LED1Task()

@@ -14,6 +14,7 @@ public:
 
     bool        Start();
     std::string Name() const;
+    void        Report() const;
 
 private:
     static void    _cyclicJob(void* task);
@@ -25,7 +26,6 @@ private:
 protected:
     uint16_t _delayPeriod;
     bool     _isOnce;
-    bool     _autoDelete;
 
     virtual bool init();
     virtual bool work();

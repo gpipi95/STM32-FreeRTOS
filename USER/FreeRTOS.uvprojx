@@ -470,7 +470,7 @@
             </File>
             <File>
               <FileName>usart.cpp</FileName>
-              <FileType>1</FileType>
+              <FileType>8</FileType>
               <FilePath>..\SYSTEM\usart\usart.cpp</FilePath>
             </File>
           </Files>
@@ -559,9 +559,9 @@
               <FilePath>..\FreeRTOS\portable\GCC\ARM_CM4F\port.c</FilePath>
             </File>
             <File>
-              <FileName>heap_2.c</FileName>
+              <FileName>heap_4.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FreeRTOS\portable\MemMang\heap_2.c</FilePath>
+              <FilePath>..\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
             </File>
           </Files>
         </Group>

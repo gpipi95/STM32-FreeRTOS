@@ -9,6 +9,7 @@
         "stm32f4xx.h": "c",
         "led.h": "c",
         "iostream": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "ios": "cpp"
     }
 }

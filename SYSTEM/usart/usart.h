@@ -23,6 +23,9 @@ int  $Sub$$fgetc(FILE* f);
 int  $Super$$ferror(FILE* f);
 int  $Sub$$ferror(FILE* f);
 
+void USART1_IRQHandler(void);
+void USART3_IRQHandler(void);
+
 #ifdef __cplusplus
 }
 #endif
