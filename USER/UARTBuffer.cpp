@@ -21,19 +21,14 @@ int UARTBuffer::write(uint8_t* data, int length)
     if (_buffer) {
         length = min((int)_buffer->GetFree(), length);
         if (_buffer->Write(data, length)) {
-            cout << "write "
-                 << length
-                 << ":"
-                 << _buffer->GetAvailable()
-                 << "\r\n";
             actual = length;
         } else {
-            cout << "write failed"
-                 << "\r\n";
+            // cout << "write failed"
+            //      << "\r\n";
         }
     } else {
-        cout << "buffer is null."
-             << "\r\n";
+        // cout << "buffer is null."
+        //      << "\r\n";
     }
     return actual;
 }

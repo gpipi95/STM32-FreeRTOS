@@ -6,10 +6,9 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-
 class PTask {
 public:
-    PTask(const std::string& name, uint16_t stackSize, uint16_t priority);
+    PTask(const char* name, uint16_t stackSize, uint16_t priority);
     virtual ~PTask();
 
     bool         Start();
@@ -21,7 +20,7 @@ public:
 private:
     static void    _cyclicJob(void* task);
     TaskHandle_t   _task;
-    std::string    _taskName;
+    char           _taskName[16];
     const uint16_t _stackSize;
     uint16_t       _priority;
 
@@ -29,6 +28,7 @@ protected:
     uint16_t _delayPeriod;
     bool     _isOnce;
     bool     _enableDebug;
+    bool     _reportSTK;
 
     virtual bool init();
     virtual bool work();

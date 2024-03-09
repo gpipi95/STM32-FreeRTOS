@@ -14,9 +14,10 @@ UARTService::UARTService()
     , _data(NULL)
 {
     _buffer      = UARTBuffer::instance();
-    _delayPeriod = 1000;
+    _delayPeriod = 5;
     _data        = (uint8_t*)malloc(_buffer_size);
-    _enableDebug = true;
+    // _enableDebug = true;
+    // _reportSTK   = true;
 }
 
 UARTService::~UARTService()

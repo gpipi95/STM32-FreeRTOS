@@ -5,15 +5,16 @@
 
 using namespace std;
 
-PTask::PTask(const string& name, const uint16_t stackSize, uint16_t priority)
+PTask::PTask(const char* name, const uint16_t stackSize, uint16_t priority)
     : _task(NULL)
-    , _taskName(name)
     , _stackSize(stackSize)
     , _priority(priority)
     , _delayPeriod(1)
     , _isOnce(false)
     , _enableDebug(false)
+    , _reportSTK(false)
 {
+    strcpy(_taskName, name);
 }
 
 PTask::~PTask()
@@ -42,7 +43,7 @@ bool PTask::Start()
             std::cout << "Create PTask1 " << Name() << "\r\n";
         }
         BaseType_t xReturned = xTaskCreate((TaskFunction_t)_cyclicJob,
-                                           (const char*)_taskName.c_str(),
+                                           (const char*)_taskName,
                                            _stackSize,
                                            (void*)this,
                                            (UBaseType_t)_priority,
@@ -109,6 +110,11 @@ void PTask::_cyclicJob(void* pvParameters)
     }
     do {
         ret = task->work();
+        if (task->_reportSTK) {
+            uint16_t stk = 0;
+            stk          = uxTaskGetStackHighWaterMark2(NULL);
+            cout << "STK" << pcTaskGetName(NULL) << " " << dec << stk << "\r\n";
+        }
         vTaskDelay(task->_delayPeriod);
     } while ((!task->_isOnce) && ret);
 
@@ -116,4 +122,11 @@ void PTask::_cyclicJob(void* pvParameters)
         cout << "Del task " << task->Name() << ".\r\n";
     }
     delete task;
+}
+
+extern "C" {
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char* pcTaskName)
+{
+    cout << "Task " << hex << xTask << pcTaskName << " STK overflow.\r\n";
+}
 }

@@ -16,12 +16,11 @@ int main(void)
 {
     bool ret = initSystem();
     cout << "Init:" << ret << "\r\n";
-    delay_ms(200);
 
     StartTask* tsk = new StartTask();
-    tsk->Name();
+    tsk->Report();
     tsk->Start();
 
-    vTaskStartScheduler(); // 开启任务调度
+    vTaskStartScheduler();
     cout << "Exit App.\r\n";
 }
