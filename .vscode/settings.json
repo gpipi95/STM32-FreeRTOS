@@ -10,6 +10,10 @@
         "led.h": "c",
         "iostream": "cpp",
         "utility": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "cmsis_os.h": "c",
+        "main.h": "c",
+        "freertos.h": "c",
+        "portable.h": "c"
     }
 }

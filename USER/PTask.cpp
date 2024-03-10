@@ -20,7 +20,7 @@ PTask::PTask(const char* name, const uint16_t stackSize, uint16_t priority)
 PTask::~PTask()
 {
     if (NULL != _task) {
-        vTaskDelete(_task);
+        osThreadTerminate(_task);
     }
 }
 /**
@@ -31,37 +31,33 @@ PTask::~PTask()
  */
 bool PTask::Start()
 {
+    osThreadAttr_t attr;
+    attr.name       = _taskName;
+    attr.stack_size = _stackSize;
+    attr.priority   = (osPriority_t)osPriorityNormal;
+
     if (_task) {
         if (_enableDebug) {
-            std::cout << "Task " << Name() << " already started.\r\n";
+            std::cout << "Task " << Name() << " already created.\r\n";
         }
         return true;
     }
 
     if (init()) {
         if (_enableDebug) {
-            std::cout << "Create PTask1 " << Name() << "\r\n";
+            std::cout << "Task init success." << Name() << "\r\n";
         }
-        BaseType_t xReturned = xTaskCreate((TaskFunction_t)_cyclicJob,
-                                           (const char*)_taskName,
-                                           _stackSize,
-                                           (void*)this,
-                                           (UBaseType_t)_priority,
-                                           &_task);
+        osThreadId_t _task = osThreadNew(_cyclicJob, this, &attr);
 
-        if (_enableDebug) {
-            std::cout << "Create PTask2 " << Name() << "\r\n";
-        }
-        if (xReturned != pdPASS) {
+        if (!_task) {
             /* The task was created. */
-            _task = NULL;
             if (_enableDebug) {
-                std::cout << "Create PTask4 " << Name() << "\r\n";
+                std::cout << "Task create failed." << Name() << "\r\n";
             }
             return false;
         } else {
             if (_enableDebug) {
-                std::cout << "Create PTask3 " << Name() << "\r\n";
+                std::cout << "Task create success." << Name() << "\r\n";
             }
             return true;
         }
@@ -101,13 +97,13 @@ void PTask::_cyclicJob(void* pvParameters)
 {
     PTask* task = static_cast<PTask*>(pvParameters);
     if (NULL == task) {
+        if (task->_enableDebug) {
+            cout << "Task " << task->Name() << " is NULL.\r\n";
+        }
         return;
     }
 
     bool ret = true;
-    if (task->_enableDebug) {
-        cout << "Task2:" << task->Name() << hex << task << "\r\n";
-    }
     do {
         ret = task->work();
         if (task->_reportSTK) {
@@ -115,11 +111,11 @@ void PTask::_cyclicJob(void* pvParameters)
             stk          = uxTaskGetStackHighWaterMark2(NULL);
             cout << "STK" << pcTaskGetName(NULL) << " " << dec << stk << "\r\n";
         }
-        vTaskDelay(task->_delayPeriod);
+        osDelay(task->_delayPeriod);
     } while ((!task->_isOnce) && ret);
 
     if (task->_enableDebug) {
-        cout << "Del task " << task->Name() << ".\r\n";
+        cout << "Del Task " << task->Name() << ".\r\n";
     }
     delete task;
 }

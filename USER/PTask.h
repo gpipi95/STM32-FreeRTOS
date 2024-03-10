@@ -4,8 +4,9 @@
 
 #include <string>
 
-#include "FreeRTOS.h"
+#include "cmsis_os.h"
 #include "task.h"
+
 class PTask {
 public:
     PTask(const char* name, uint16_t stackSize, uint16_t priority);
@@ -15,11 +16,12 @@ public:
     std::string  Name() const;
     void         Report() const;
     bool         IsDebugEabled() const { return _enableDebug; }
-    TaskHandle_t Handle() const { return _task; }
+    osThreadId_t Handle() const { return _task; }
 
 private:
-    static void    _cyclicJob(void* task);
-    TaskHandle_t   _task;
+    static void  _cyclicJob(void* task);
+    osThreadId_t _task;
+
     char           _taskName[16];
     const uint16_t _stackSize;
     uint16_t       _priority;
