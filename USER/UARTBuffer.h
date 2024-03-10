@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "lockfree.hpp"
+#include "lockfree/lockfree.hpp"
 
 class UARTBuffer {
 public:

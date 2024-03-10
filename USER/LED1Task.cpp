@@ -1,7 +1,7 @@
 #include "LED1Task.h"
 
 #include "App.h"
-#include "led.h"
+#include "stm32f4xx_hal.h"
 
 #include <iostream>
 
@@ -19,8 +19,8 @@ LED1Task::~LED1Task()
 
 bool LED1Task::work()
 {
-    LED1 = 0;
-    vTaskDelay(200);
-    LED1 = 1;
+    HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_10);
+    osDelay(200);
+    HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_10);
     return true;
 }

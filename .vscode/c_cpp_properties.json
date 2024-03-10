@@ -3,7 +3,16 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "E:\\workroom\\STM32\\FreeRTOS\\Core\\Inc/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\User/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\Drivers\\STM32F4xx_HAL_Driver\\Inc/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\Middlewares\\Third_Party\\FreeRTOS\\Source\\CMSIS_RTOS_V2/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\RVDS\\ARM_CM4F/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\Drivers\\CMSIS\\Include/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\RVDS\\ARM_CM4F"
             ],
             "defines": [
                 "_DEBUG",
@@ -14,6 +23,7 @@
             "compilerPath": "D:\\Keil_v5\\ARM\\ARMCLANG\\bin\\armclang.exe",
             "cStandard": "c11",
             "cppStandard": "c++11"
+
         }
     ],
     "version": 4
