@@ -16,11 +16,11 @@ public:
     std::string  Name() const;
     void         Report() const;
     bool         IsDebugEabled() const { return _enableDebug; }
-    osThreadId_t Handle() const { return _task; }
+    TaskHandle_t Handle() const { return _task; }
 
 private:
     static void  _cyclicJob(void* task);
-    osThreadId_t _task;
+    TaskHandle_t _task;
 
     char           _taskName[16];
     const uint16_t _stackSize;

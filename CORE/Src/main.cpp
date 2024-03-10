@@ -24,16 +24,21 @@
 /* USER CODE BEGIN Includes */
 #include "LED0Task.h"
 #include "StartTask.h"
+#include "UARTBuffer.h"
+#include "Utils.h"
+
+#include <iostream>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+using namespace std;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define BUFFER_SIZE 128
+uint8_t rx_buffer[BUFFER_SIZE];
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -74,7 +79,16 @@ void        StartDefaultTask(void* argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
+{
+    static UARTBuffer* buf = UARTBuffer::instance();
+    if (huart == &huart1) {
+        // Utils::printArray(rx_buffer, BUFFER_SIZE);
+        if (!buf->write(rx_buffer, BUFFER_SIZE)) {
+        }
+        HAL_UART_Receive_DMA(huart, rx_buffer, BUFFER_SIZE);
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -111,6 +125,7 @@ int main(void)
     MX_FSMC_Init();
     /* USER CODE BEGIN 2 */
 
+    HAL_UART_Receive_DMA(&huart1, rx_buffer, BUFFER_SIZE);
     /* USER CODE END 2 */
 
     /* Init scheduler */
@@ -271,8 +286,8 @@ static void MX_DMA_Init(void)
 
     /* DMA controller clock enable */
     __HAL_RCC_DMA2_CLK_ENABLE();
+    __HAL_RCC_DMA2_CLK_ENABLE();
 
-    /* DMA interrupt init */
     /* DMA2_Stream2_IRQn interrupt configuration */
     HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
@@ -379,10 +394,10 @@ static void MX_FSMC_Init(void)
 void StartDefaultTask(void* argument)
 {
     /* USER CODE BEGIN 5 */
-    // StartTask* start = new StartTask();
-    // start->Start();
-    LED0Task* led0 = new LED0Task();
-    led0->Start();
+    StartTask* start = new StartTask();
+    start->Start();
+    // LED0Task *led0 = new LED0Task();
+    // led0->Start();
     /* Infinite loop */
     for (;;) {
         osDelay(1000);

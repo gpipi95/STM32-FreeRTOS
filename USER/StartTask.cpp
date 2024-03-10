@@ -14,8 +14,8 @@ StartTask::StartTask()
     : PTask(START_TASK_NAME, START_TASK_STK, START_TASK_PRI)
 {
     _delayPeriod = 2000;
-    _reportSTK   = true;
-    _enableDebug = true;
+    // _reportSTK   = true;
+    // _enableDebug = true;
 }
 
 StartTask::~StartTask()

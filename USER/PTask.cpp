@@ -47,8 +47,13 @@ bool PTask::Start()
         if (_enableDebug) {
             std::cout << "Task init success." << Name() << "\r\n";
         }
-        osThreadId_t _task = osThreadNew(_cyclicJob, this, &attr);
-
+        // osThreadId_t _task = osThreadNew(_cyclicJob, this, &attr);
+        BaseType_t xReturned = xTaskCreate((TaskFunction_t)_cyclicJob,
+                                           (const char*)_taskName,
+                                           _stackSize,
+                                           (void*)this,
+                                           (UBaseType_t)_priority,
+                                           &_task);
         if (!_task) {
             /* The task was created. */
             if (_enableDebug) {

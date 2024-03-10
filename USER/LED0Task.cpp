@@ -11,8 +11,8 @@ LED0Task::LED0Task()
     : PTask(LED0_TASK_NAME, LED0_TASK_STK, LED0_TASK_PRI)
 {
     _delayPeriod = 1000;
-    _reportSTK   = true;
-    _enableDebug = true;
+    // _reportSTK   = true;
+    // _enableDebug = true;
 }
 
 LED0Task::~LED0Task()

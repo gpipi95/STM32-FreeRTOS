@@ -11,6 +11,7 @@ LED1Task::LED1Task()
 {
     _delayPeriod = 800;
     // _reportSTK   = true;
+    // _enableDebug = true;
 }
 
 LED1Task::~LED1Task()
