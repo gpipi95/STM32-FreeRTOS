@@ -4,18 +4,19 @@
 #pragma once
 
 #include "PTask.h"
-#include "UARTBuffer.h"
+#include "lwrb/lwrb.h"
 
 class UARTService : public PTask {
 public:
-    UARTService();
+    UARTService(lwrb_t* buf1, lwrb_t* buf3);
     virtual ~UARTService();
 
 private:
-    UARTBuffer* _buffer;
-    uint8_t*    _data;
+    const static int _dataSize;
+    lwrb_t*          _bufferUart1;
+    lwrb_t*          _bufferUart3;
 
-    const static int _buffer_size;
+    uint8_t* _data;
 
     bool work();
 };

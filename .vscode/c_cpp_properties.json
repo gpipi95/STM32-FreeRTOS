@@ -5,6 +5,7 @@
             "includePath": [
                 "E:\\workroom\\STM32\\FreeRTOS\\Core\\Inc/**",
                 "E:\\workroom\\STM32\\FreeRTOS\\User/**",
+                "E:\\workroom\\STM32\\FreeRTOS\\User\\include",
                 "E:\\workroom\\STM32\\FreeRTOS\\Drivers\\STM32F4xx_HAL_Driver\\Inc/**",
                 "E:\\workroom\\STM32\\FreeRTOS\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy/**",
                 "E:\\workroom\\STM32\\FreeRTOS\\Middlewares\\Third_Party\\FreeRTOS\\Source\\include/**",
@@ -13,6 +14,7 @@
                 "E:\\workroom\\STM32\\FreeRTOS\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include/**",
                 "E:\\workroom\\STM32\\FreeRTOS\\Drivers\\CMSIS\\Include/**",
                 "E:\\workroom\\STM32\\FreeRTOS\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\RVDS\\ARM_CM4F"
+                "D:\\Keil_v5\\ARM\\ARMCLANG\\include/**"
             ],
             "defines": [
                 "_DEBUG",

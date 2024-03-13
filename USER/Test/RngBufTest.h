@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "lockfree/lockfree.hpp"
+#include "lwrb/lwrb.h"
 
 class RngBufTest {
 public:
@@ -12,10 +12,9 @@ public:
 
     void Test();
 
-    typedef lockfree::spsc::RingBuf<uint8_t, 200> TestRngBufType;
-
 private:
-    TestRngBufType* buffer;
+    uint8_t* buffer;
+    lwrb_t   lwrbBuf;
 };
 
 #endif

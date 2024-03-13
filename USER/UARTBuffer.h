@@ -3,26 +3,21 @@
 
 #pragma once
 
-#include "lockfree/lockfree.hpp"
+#include "lwrb/lwrb.h"
 
 class UARTBuffer {
 public:
-    static UARTBuffer* instance();
+    UARTBuffer(int size);
+    ~UARTBuffer();
 
-    typedef lockfree::spsc::RingBuf<uint8_t, 32> BufferType;
-
-    int  capacity() const { return 256; }
-    int  write(uint8_t* data, int length);
-    int  get(uint8_t* data, int length);
-    void setBuffer(BufferType* buf)
-    {
-        _buffer = buf;
-    }
+    int capacity() const { return _size; }
+    int write(uint8_t* data, int length);
+    int get(uint8_t* data, int length);
 
 private:
-    UARTBuffer();
-    ~UARTBuffer() { }
-    BufferType* _buffer;
+    int      _size;
+    lwrb_t   _buffer;
+    uint8_t* _data;
 };
 
 #endif

@@ -31,6 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "lwrb/lwrb.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -39,6 +40,8 @@ extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
 extern DMA_HandleTypeDef  hdma_usart1_rx;
 extern SRAM_HandleTypeDef hsram1;
+extern lwrb_t             rng_buf1;
+extern lwrb_t             rng_buf3;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

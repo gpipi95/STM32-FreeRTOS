@@ -1,52 +1,44 @@
 #include "UARTBuffer.h"
 
 #include <iostream>
-#include <utility>
 
 using namespace std;
-
-static UARTBuffer* _instance = NULL;
-
-UARTBuffer* UARTBuffer::instance()
-{
-    if (!_instance) {
-        _instance = new UARTBuffer();
-    }
-    return _instance;
-}
 
 int UARTBuffer::write(uint8_t* data, int length)
 {
     int actual = 0;
-    if (_buffer) {
-        length = min((int)_buffer->GetFree(), length);
-        if (_buffer->Write(data, length)) {
-            actual = length;
-        } else {
-            // cout << "write failed"
-            //      << "\r\n";
-        }
-    } else {
-        // cout << "buffer is null."
-        //      << "\r\n";
+    if (_data) {
+        length = min((int)lwrb_get_free(&_buffer), length);
+        actual = (int)lwrb_write(&_buffer, data, length);
     }
     return actual;
 }
 
 int UARTBuffer::get(uint8_t* data, int length)
 {
-    if (_buffer) {
-        length = min((int)_buffer->GetAvailable(), length);
-        if (_buffer->Read(data, length)) {
-            return length;
-        }
-        return 0;
-    } else {
-        return 0;
+    if (_data) {
+        length = min((int)lwrb_get_full(&_buffer), length);
+        return lwrb_read(&_buffer, data, length);
+    }
+    return 0;
+}
+
+UARTBuffer::UARTBuffer(int size)
+    : _data(NULL)
+    , _size(0)
+{
+    if (size > 0) {
+        _size = size;
+    }
+    _data = new uint8_t[_size];
+    if (_data) {
+        lwrb_init(&_buffer, _data, _size);
     }
 }
 
-UARTBuffer::UARTBuffer()
-    : _buffer(NULL)
+UARTBuffer::~UARTBuffer()
 {
+    if (_data) {
+        delete[] _data;
+    }
 }

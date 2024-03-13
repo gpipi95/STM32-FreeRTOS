@@ -2,33 +2,46 @@
 
 #include <iostream>
 
-using namespace lockfree::spsc;
 using namespace std;
 
 RngBufTest::RngBufTest()
     : buffer(NULL)
 {
-    buffer = new TestRngBufType();
+    buffer = new uint8_t[20];
+    if (buffer) {
+        lwrb_init(&lwrbBuf, buffer, 20);
+    }
 }
 
 RngBufTest::~RngBufTest()
 {
-    if (NULL != buffer) {
-        delete buffer;
+    if (buffer) {
+        delete[] buffer;
     }
 }
 
 void RngBufTest::Test()
 {
-    cout << "buffer available:" << buffer->GetAvailable() << endl;
-    cout << "buffer getFree:" << buffer->GetFree() << endl;
-    uint8_t a[1] = { 0xAA };
-    uint8_t b[1] = { 0x00 };
-    cout << "buffer write:" << buffer->Write(a, 1) << endl;
-    cout << "buffer available:" << buffer->GetAvailable() << endl;
-    cout << "buffer getFree:" << buffer->GetFree() << endl;
+    int len = 0;
+    if (buffer) {
+        len = lwrb_get_full(&lwrbBuf);
+        cout << "buffer available:" << len << "\r\n";
+        len = lwrb_get_free(&lwrbBuf);
+        cout << "buffer getFree:" << len << "\r\n";
+        uint8_t a[1] = { 0xAA };
+        uint8_t b[1] = { 0x00 };
+        len          = lwrb_write(&lwrbBuf, a, 1);
+        cout << "buffer write:" << len << "\r\n";
+        len = lwrb_get_full(&lwrbBuf);
+        cout << "buffer available:" << len << "\r\n";
+        len = lwrb_get_free(&lwrbBuf);
+        cout << "buffer getFree:" << len << "\r\n";
 
-    cout << "buffer get:" << buffer->Read(b, 1) << endl;
-    cout << "buffer available:" << buffer->GetAvailable() << endl;
-    cout << "buffer getFree:" << buffer->GetFree() << endl;
+        len = lwrb_read(&lwrbBuf, b, 1);
+        cout << "buffer get:" << len << "\r\n";
+        len = lwrb_get_full(&lwrbBuf);
+        cout << "buffer available:" << len << "\r\n";
+        len = lwrb_get_free(&lwrbBuf);
+        cout << "buffer getFree:" << len << "\r\n";
+    }
 }

@@ -24,10 +24,10 @@
 /* USER CODE BEGIN Includes */
 #include "LED0Task.h"
 #include "StartTask.h"
-#include "UARTBuffer.h"
 #include "Utils.h"
 
 #include <iostream>
+#include <utility>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -38,10 +38,12 @@ using namespace std;
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define BUFFER_SIZE 128
-uint8_t rx_buffer[BUFFER_SIZE];
 uint8_t rx_buffer1[BUFFER_SIZE];
-uint8_t rx_buffer2[BUFFER_SIZE];
 uint8_t rx_buffer3[BUFFER_SIZE];
+uint8_t rx_rng_buffer1[BUFFER_SIZE * 2];
+uint8_t rx_rng_buffer3[BUFFER_SIZE * 2];
+lwrb_t  rng_buf1;
+lwrb_t  rng_buf3;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,6 +55,7 @@ uint8_t rx_buffer3[BUFFER_SIZE];
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart3;
 DMA_HandleTypeDef  hdma_usart1_rx;
+DMA_HandleTypeDef  hdma_usart3_rx;
 
 SRAM_HandleTypeDef hsram1;
 
@@ -84,23 +87,53 @@ void        StartDefaultTask(void* argument);
 /* USER CODE BEGIN 0 */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size)
 {
+    int len  = 0;
+    int rlen = 0;
     if (huart == &huart1) {
         switch (HAL_UARTEx_GetRxEventType(huart)) {
         case HAL_UART_RXEVENT_IDLE:
             // cout << "Idle:" << Size << "\r\n";
-            memcpy(rx_buffer1, rx_buffer, BUFFER_SIZE);
+            rlen = min((int)Size, (int)lwrb_get_free(&rng_buf1));
+            if (rlen) {
+                lwrb_write(&rng_buf1, rx_buffer1, rlen);
+            }
             break;
-
         case HAL_UART_RXEVENT_HT:
             // cout << "Half:" << Size << "\r\n";
-            memcpy(rx_buffer2, rx_buffer, BUFFER_SIZE);
+            // memcpy(rx_buffer2, rx_buffer, BUFFER_SIZE);
             break;
 
         default:
+            rlen = min((int)Size, (int)lwrb_get_free(&rng_buf1));
+            if (rlen) {
+                lwrb_write(&rng_buf1, rx_buffer1, rlen);
+            }
             // cout << "CPLT:" << Size << "\r\n";
-            memcpy(rx_buffer3, rx_buffer, BUFFER_SIZE);
             break;
         };
+    } else if (huart == &huart3) {
+        switch (HAL_UARTEx_GetRxEventType(huart)) {
+        case HAL_UART_RXEVENT_IDLE:
+            // cout << "Idle:" << Size << "\r\n";
+            rlen = min((int)Size, (int)lwrb_get_free(&rng_buf3));
+            if (rlen) {
+                lwrb_write(&rng_buf3, rx_buffer3, rlen);
+            }
+            break;
+        case HAL_UART_RXEVENT_HT:
+            // cout << "Half:" << Size << "\r\n";
+            // memcpy(rx_buffer2, rx_buffer, BUFFER_SIZE);
+            break;
+
+        default:
+            rlen = min((int)Size, (int)lwrb_get_free(&rng_buf3));
+            if (rlen) {
+                lwrb_write(&rng_buf3, rx_buffer3, rlen);
+            }
+            // cout << "CPLT:" << Size << "\r\n";
+            break;
+        };
+        /* code */
     }
 }
 /* USER CODE END 0 */
@@ -139,8 +172,14 @@ int main(void)
     MX_FSMC_Init();
     /* USER CODE BEGIN 2 */
 
-    // if (HAL_UART_Receive_DMA(&huart1, rx_buffer, BUFFER_SIZE) != HAL_OK) {
-    if (HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer, BUFFER_SIZE) != HAL_OK) {
+    lwrb_init(&rng_buf1, rx_rng_buffer1, BUFFER_SIZE * 2);
+
+    lwrb_init(&rng_buf3, rx_rng_buffer3, BUFFER_SIZE * 2);
+
+    if (HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_buffer1, BUFFER_SIZE) != HAL_OK) {
+        Error_Handler();
+    }
+    if (HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rx_buffer3, BUFFER_SIZE) != HAL_OK) {
         Error_Handler();
     }
     /* USER CODE END 2 */
@@ -303,7 +342,12 @@ static void MX_DMA_Init(void)
 
     /* DMA controller clock enable */
     __HAL_RCC_DMA2_CLK_ENABLE();
+    __HAL_RCC_DMA1_CLK_ENABLE();
 
+    /* DMA interrupt init */
+    /* DMA1_Stream1_IRQn interrupt configuration */
+    HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
     /* DMA2_Stream2_IRQn interrupt configuration */
     HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
@@ -414,13 +458,10 @@ void StartDefaultTask(void* argument)
     start->Start();
     // LED0Task *led0 = new LED0Task();
     // led0->Start();
+
     /* Infinite loop */
     for (;;) {
         osDelay(5000);
-        Utils::printArrayHexASCII(rx_buffer, BUFFER_SIZE);
-        Utils::printArrayHexASCII(rx_buffer1, BUFFER_SIZE);
-        Utils::printArrayHexASCII(rx_buffer2, BUFFER_SIZE);
-        Utils::printArrayHexASCII(rx_buffer3, BUFFER_SIZE);
     }
     /* USER CODE END 5 */
 }

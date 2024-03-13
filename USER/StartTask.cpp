@@ -5,6 +5,7 @@
 #include "LED0Task.h"
 #include "LED1Task.h"
 #include "UARTService.h"
+#include "main.h"
 
 #include <iostream>
 
@@ -48,7 +49,7 @@ bool StartTask::work()
             led1Tsk->Start();
             cout << "Start Led1 finished.\r\n";
         }
-        UARTService* uartServ = new UARTService();
+        UARTService* uartServ = new UARTService(&rng_buf1, &rng_buf3);
         _tasks[2]             = uartServ->Handle();
         uartServ->Start();
         cout << "Start uartserv finished.\r\n";
