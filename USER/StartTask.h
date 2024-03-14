@@ -14,7 +14,7 @@ private:
     bool init();
     bool work();
 
-    osThreadId_t _tasks[3];
+    TaskHandle_t _tasks[3];
 };
 
 #endif

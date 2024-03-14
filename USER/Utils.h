@@ -11,7 +11,7 @@ public:
     ~Utils();
 
     static void printArray(uint8_t* buf, int len);
-    static void printArrayHexASCII(uint8_t* buf, int len);
+    static void printArrayHex(uint8_t* buf, int len);
 
 private:
 };

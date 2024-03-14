@@ -1,18 +1,6 @@
 {
-    "files.encoding": "utf8",
     "files.associations": {
         "*.vue": "vue",
-        "task.h": "c",
-        "xstring": "cpp",
-        "system.h": "c",
-        "limits": "c",
-        "stm32f4xx.h": "c",
-        "led.h": "c",
-        "iostream": "cpp",
-        "utility": "cpp",
-        "ios": "cpp",
-        "cmsis_os.h": "c",
-        "main.h": "c",
         "freertos.h": "c",
         "portable.h": "c"
     }

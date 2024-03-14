@@ -337,7 +337,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32F407xx</Define>
+              <Define>USE_HAL_DRIVER,STM32F407xx,LWRB_DISABLE_ATOMIC</Define>
               <Undefine></Undefine>
               <IncludePath>../Core/Inc;../User;../User/include;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../User/Test</IncludePath>
             </VariousControls>
@@ -394,11 +394,6 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
-              <FileName>main.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Core\Src\main.cpp</FilePath>
-            </File>
-            <File>
               <FileName>usart.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Core\Src\usart.cpp</FilePath>
@@ -433,11 +428,26 @@
               <FileType>1</FileType>
               <FilePath>..\User\lwrb\lwrb_ex.c</FilePath>
             </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>Global.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User\Global.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Application/User</GroupName>
           <Files>
+            <File>
+              <FileName>Application.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\User\Application.cpp</FilePath>
+            </File>
             <File>
               <FileName>FloatTask.cpp</FileName>
               <FileType>8</FileType>

@@ -12,7 +12,7 @@ Utils::~Utils()
 {
 }
 
-void Utils::printArrayHexASCII(uint8_t* buf, int len)
+void Utils::printArrayHex(uint8_t* buf, int len)
 {
     char ch[3];
 
