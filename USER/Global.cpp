@@ -6,6 +6,7 @@ uint8_t* Global::rx_rng_buffer1_ptr = NULL;
 uint8_t* Global::rx_rng_buffer3_ptr = NULL;
 lwrb_t*  Global::rng_buf1_ptr       = NULL;
 lwrb_t*  Global::rng_buf3_ptr       = NULL;
+lwrb_t*  Global::tx_rng_buf1_ptr    = NULL;
 
 uint8_t* Global::GetRxBuffer1()
 {
@@ -37,6 +38,11 @@ lwrb_t* Global::GetRngBuffer3()
     return rng_buf3_ptr;
 }
 
+lwrb_t* Global::GetTxRngBuffer1()
+{
+    return tx_rng_buf1_ptr;
+}
+
 void Global::SetRxBuffer1(uint8_t* p)
 {
     rx_buffer1_ptr = p;
@@ -65,4 +71,9 @@ void Global::SetRngBuffer1(lwrb_t* p)
 void Global::SetRngBuffer3(lwrb_t* p)
 {
     rng_buf3_ptr = p;
+}
+
+void Global::SetTxRngBuffer1(lwrb_t* p)
+{
+    tx_rng_buf1_ptr = p;
 }

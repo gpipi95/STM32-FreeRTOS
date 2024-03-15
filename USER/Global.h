@@ -14,6 +14,7 @@ public:
     static uint8_t* GetRxRngBuffer3();
     static lwrb_t*  GetRngBuffer1();
     static lwrb_t*  GetRngBuffer3();
+    static lwrb_t*  GetTxRngBuffer1();
 
     static void SetRxBuffer1(uint8_t* p);
     static void SetRxBuffer3(uint8_t* p);
@@ -21,6 +22,7 @@ public:
     static void SetRxRngBuffer3(uint8_t* p);
     static void SetRngBuffer1(lwrb_t* p);
     static void SetRngBuffer3(lwrb_t* p);
+    static void SetTxRngBuffer1(lwrb_t* p);
 
 private:
     static uint8_t* rx_buffer1_ptr;
@@ -29,6 +31,7 @@ private:
     static uint8_t* rx_rng_buffer3_ptr;
     static lwrb_t*  rng_buf1_ptr;
     static lwrb_t*  rng_buf3_ptr;
+    static lwrb_t*  tx_rng_buf1_ptr;
 };
 
 #ifdef __cplusplus

@@ -20,7 +20,7 @@
 #define LED1_TASK_NAME "LED1Tsk"
 #define UART_SERVICE_TASK_NAME "UARTSrvTsk"
 
-#define BUFFER_SIZE 128
+#define BUFFER_SIZE 224
 
 #ifdef __cplusplus
 extern "C" {

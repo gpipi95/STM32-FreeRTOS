@@ -1,7 +1,10 @@
 #include "usart.h"
 
 #include "FreeRTOS.h"
+// #include "Global.h"
 #include "main.h"
+
+#include "lwrb/lwrb.h"
 
 #include <iostream>
 
@@ -28,6 +31,7 @@ void _sys_exit(int x)
 // 重定义fputc函数
 int $Sub$$fputc(int ch, FILE* f)
 {
+    // lwrb_write(Global::GetTxRngBuffer1(), (uint8_t*)&ch, 1);
     HAL_UART_Transmit(&huart1, (uint8_t*)&ch, 1, HAL_MAX_DELAY);
     return ch;
 }

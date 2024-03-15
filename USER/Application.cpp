@@ -9,11 +9,15 @@
 
 uint8_t rx_buffer1[BUFFER_SIZE];
 uint8_t rx_buffer3[BUFFER_SIZE];
-uint8_t rx_rng_buffer1[BUFFER_SIZE * 2];
-uint8_t rx_rng_buffer3[BUFFER_SIZE * 2];
+uint8_t rx_rng_buffer1[BUFFER_SIZE * 3];
+uint8_t rx_rng_buffer3[BUFFER_SIZE * 3];
+
+// for fputc redirect use
+// uint8_t tx_rng_buffer1[BUFFER_SIZE];
 
 lwrb_t rng_buf1;
 lwrb_t rng_buf3;
+// lwrb_t tx_rng_buf1;
 
 uint16_t buf1Last = 0;
 uint16_t buf3Last = 0;
@@ -26,10 +30,11 @@ void startFirstTask()
     Global::SetRxRngBuffer3(rx_rng_buffer3);
     Global::SetRngBuffer1(&rng_buf1);
     Global::SetRngBuffer3(&rng_buf3);
+    // Global::SetRngBuffer3(&tx_rng_buf1);
 
-    uint8_t ret = 0;
-    ret         = lwrb_init(&rng_buf1, rx_rng_buffer1, sizeof(rx_rng_buffer1));
-    ret         = lwrb_init(&rng_buf3, rx_rng_buffer3, sizeof(rx_rng_buffer3));
+    lwrb_init(&rng_buf1, rx_rng_buffer1, sizeof(rx_rng_buffer1));
+    lwrb_init(&rng_buf3, rx_rng_buffer3, sizeof(rx_rng_buffer3));
+    // lwrb_init(&tx_rng_buf1, tx_rng_buffer1, sizeof(tx_rng_buffer1));
 
     StartTask* start = new StartTask();
     start->Start();
@@ -48,37 +53,26 @@ void usrInitFirst()
 
 void mainCyclicJob()
 {
+    // std::cout << "Transmit data by uart3.\r\n";
+    // uint8_t test[3] = { 0xEB, 0x90, 0x40 };
+    // HAL_UART_Transmit(&huart3, test, 3, HAL_MAX_DELAY);
 }
 
 extern "C" void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size)
 {
-    bool isIdle = false;
-
-    switch (HAL_UARTEx_GetRxEventType(huart)) {
-    case HAL_UART_RXEVENT_IDLE:
-        isIdle = true;
-        break;
-    case HAL_UART_RXEVENT_HT:
-        return; // do not process half full
-        break;
-    default:
-        break;
-    };
-
+    int len = 0;
     if (huart == &huart1) {
-        if (buf1Last > 0) {
-            lwrb_write(&rng_buf1, rx_buffer1 + buf1Last, Size - buf1Last);
-        } else {
-            lwrb_write(&rng_buf1, rx_buffer1, Size);
+        len = Size - buf1Last;
+        if (len > 0) {
+            lwrb_write(&rng_buf1, rx_buffer1 + buf1Last, len);
         }
-        buf1Last = isIdle ? Size : 0;
+        buf1Last = (Size >= sizeof(rx_buffer1)) ? 0 : Size;
 
     } else if (huart == &huart3) {
-        if (buf3Last > 0) {
-            lwrb_write(&rng_buf3, rx_buffer3 + buf3Last, Size - buf3Last);
-        } else {
-            lwrb_write(&rng_buf3, rx_buffer3, Size);
+        len = Size - buf3Last;
+        if (len > 0) {
+            lwrb_write(&rng_buf3, rx_buffer3 + buf3Last, len);
         }
-        buf3Last = isIdle ? Size : 0;
+        buf3Last = (Size >= sizeof(rx_buffer3)) ? 0 : Size;
     }
 }

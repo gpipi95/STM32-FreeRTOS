@@ -51,7 +51,7 @@ bool StartTask::work()
             led1Tsk->Start();
             cout << "Start Led1 finished.\r\n";
         }
-        UARTService* uartServ = new UARTService(Global::GetRngBuffer1(), Global::GetRngBuffer3());
+        UARTService* uartServ = new UARTService(Global::GetRngBuffer1(), Global::GetRngBuffer3(), Global::GetTxRngBuffer1());
         _tasks[2]             = uartServ->Handle();
         uartServ->Start();
         cout << "Start uartserv finished.\r\n";
